@@ -1,0 +1,11 @@
+crashsafe-run/
+data/
+.probe/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+dist/
+build/
+.ruff_cache/
+.mypy_cache/
