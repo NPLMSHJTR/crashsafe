@@ -1,5 +1,7 @@
 # crashsafe
 
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 **Prove that a crash loses nothing you acknowledged.** `crashsafe` is a small
 log-structured key-value store plus a harness that truncates its log at arbitrary
 byte offsets and checks that recovery returns exactly the records whose last byte
@@ -13,6 +15,15 @@ truncation trials 60  failures 0
   crash after rename   keys 400   preserved True
   clean compaction     keys 400   preserved True
 stress 200 trials  mismatches 0  phantom 0
+```
+
+## Workflow
+
+```mermaid
+flowchart LR
+    A["1. Append CRC-Framed Log<br/>(Store.java write + ground-truth plan.json)"] --> B["2. Inject Truncation & Crash<br/>(harness.py cut at arbitrary byte offsets)"]
+    B --> C["3. Recover Longest Valid Prefix<br/>(Store.java recover: Magic + Len + CRC32)"]
+    C --> D["4. Atomic Compaction & Stress Test<br/>(snapshot.dat.tmp -> fsync -> rename + 200 trials)"]
 ```
 
 ## The safety argument
